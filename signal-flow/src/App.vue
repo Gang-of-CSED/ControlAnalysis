@@ -87,10 +87,12 @@ export default {
   },
   methods: {
     Run() {
-      // console.log(JSON.stringify(this.nodes, null, 2));
-      // console.log(JSON.stringify(this.edges, null, 2));
-      //  this.findAllForwardPathsAndGains();
-      //  this.printAllForwardPathsAndGains(this.forwardPaths);
+      //bassam bullshit just to test the function 
+        // console.log(JSON.stringify(this.nodes, null, 2));
+        // console.log(JSON.stringify(this.edges, null, 2));
+        //  this.findAllForwardPathsAndGains();
+        //  this.printAllForwardPathsAndGains(this.forwardPaths);
+      //end of bassam bullshit  
 
    
       const visited = {};
@@ -176,7 +178,7 @@ export default {
 
 
     //bassam section Dont you dare touch it 55 !!
-    
+
     //just findAllForwardPathsAndGains() that you can use to get the forward paths and gains
     //the funtcion will return list of forward paths and gains (every element in the list is a forward path with it's gain)
     //and it's output is in this format [{ path: [nodeId1,nodeId2], gain: [X1,X2] }] 
