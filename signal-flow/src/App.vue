@@ -87,13 +87,16 @@ export default {
   },
   methods: {
     Run() {
-      //bassam bullshit just to test the function 
-        // console.log(JSON.stringify(this.nodes, null, 2));
-        // console.log(JSON.stringify(this.edges, null, 2));
-        //  this.findAllForwardPathsAndGains();
-        //  this.printAllForwardPathsAndGains(this.forwardPaths);
-      //end of bassam bullshit  
+      // // bassam bullshit just to test the function 
 
+      //   console.log(JSON.stringify(this.nodes, null, 2));
+      //   console.log(JSON.stringify(this.edges, null, 2));
+      //    this.findAllForwardPathsAndGains();
+      //    this.printAllForwardPathsAndGains(this.forwardPaths);
+
+      // // end of bassam bullshit  
+
+      
    
       const visited = {};
       // this.paths = this.findAllPaths('node1', 'node2', visited, [], this.edges);
@@ -138,20 +141,20 @@ export default {
       }
 
      
-      console.log(JSON.stringify(nodes, null, 2));
+    //   // console.log(JSON.stringify(nodes, null, 2));
 
-      this.printNodes(nodes);
-      fetch('http://localhost:8080/data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-      })
-        .then(response => response.text())
-        .then(data => {
-          console.log('Success:', data);
-        })
+    
+    //   fetch('http://localhost:8080/data', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify(data)
+    //   })
+    //     .then(response => response.text())
+    //     .then(data => {
+    //       console.log('Success:', data);
+    //     })
      
     },
 
