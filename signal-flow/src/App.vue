@@ -10,15 +10,8 @@
           :transform="makeTransform(center, position, scale)" />
       </template>
       <template #edge-label="{ edgeId, edge, scale, ...slotProps }">
-        <v-edge-label 
-        :text="edge.label" 
-        align="center" 
-        vertical-align="above" 
-        v-bind="slotProps" 
-        :font-size="30 * scale"
-        fill="#ff5500"
-
-        />
+        <v-edge-label :text="edge.label" align="center" vertical-align="above" v-bind="slotProps"
+          :font-size="30 * scale" fill="#ff5500" />
 
       </template>
 
@@ -26,6 +19,8 @@
     <div class="panel" v-bind:style="{ left: `${x}px`, top: `${y}px` }" @mousedown="startDrag" @mousemove="dragging"
       @mouseup="stopDrag" @mouseleave="stopDrag">
       <button @click="AddMachine" class="addm">🟢</button>
+      <button @click="AddQueue" class="addq">🟨</button>
+
       <input type="text" v-model="edgeGain" class="input" placeholder="Edge Gain G1(x)" />
       <button @click="AddEdge" class="adde">🔗</button>
       <button @click="Run" class="run">🔍</button>
@@ -42,7 +37,7 @@
       <h2>Paths</h2>
       <h2>Loops</h2>
       <h2>Determinants</h2>
-      
+
     </div>
   </div>
 </template>
@@ -117,7 +112,7 @@ export default {
       for (let edgeI in this.edges) {
         let edge = this.edges[edgeI];
         console.log(edgeI, edge);
-        edges[edgeI] = { "source": edge.source, "target": edge.target, "color": edge.color, "label": edge.label};
+        edges[edgeI] = { "source": edge.source, "target": edge.target, "color": edge.color, "label": edge.label };
       }
 
       let data = {
@@ -192,25 +187,33 @@ export default {
 
       const nodeId = `node${nextNodeIndex.value}`;
       const name = `N${this.nextMachineIndex}`;
-      nodes[nodeId] = { name, type: 'machine', shape: 'circle', color: '#11ff55' };
+      nodes[nodeId] = { name, type: 'non-output', shape: 'circle', color: '#11ff55' };
       this.nextMachineIndex++;
       this.nextNodeIndex++;
     },
+    AddQueue() {
 
+      const nodeId = `node${nextNodeIndex.value}`;
+      const name = `O${this.nextQueueIndex}`;
+      nodes[nodeId] = { name, type: 'output', shape: 'rect', color: '#FFDF64' };
+
+      this.nextQueueIndex++;
+      this.nextNodeIndex++;
+    },
     AddEdge() {
       if (this.selectedNodes.length !== 2) {
         alert('Please select two nodes to connect.');
         return;
       }
 
-      if(this.edgeGain === undefined || this.edgeGain === ""){
+      if (this.edgeGain === undefined || this.edgeGain === "") {
         alert('Please enter the edge gain.');
         return;
       }
-     
+
       const [source, target] = this.selectedNodes;
       const edgeId = `edge${this.nextEdgeIndex}`;
-      this.edges[edgeId] = { source, target, color: '#55aaFF', label: this.edgeGain};
+      this.edges[edgeId] = { source, target, color: '#55aaFF', label: this.edgeGain };
       this.nextEdgeIndex++;
     },
     clear() {
