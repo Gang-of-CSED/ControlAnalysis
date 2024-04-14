@@ -69,20 +69,35 @@ export default {
       configs,
       data,
       paths,
+  
+      forwardPaths: [{ path: [], gain: [] }],
+   
+      //  forWardGains: [],//bassam
       ref
     };
   },
   mounted() {
     console.log("mounted");
-    // this.update();
+    // this.update()
+    
+    // this.printAllPaths(this.paths);
+    
+
+    
   },
   methods: {
     Run() {
+      // console.log(JSON.stringify(this.nodes, null, 2));
+      // console.log(JSON.stringify(this.edges, null, 2));
+      //  this.findAllForwardPathsAndGains();
+      //  this.printAllForwardPathsAndGains(this.forwardPaths);
+
+   
       const visited = {};
       // this.paths = this.findAllPaths('node1', 'node2', visited, [], this.edges);
       console.log(this.paths);
       this.configs.path.visible = !this.configs.path.visible;
-      this.running = true;
+      // this.running = true;
 
       // create fetch post request with payloads in following format
       // {
@@ -120,41 +135,119 @@ export default {
         "edges": edges
       }
 
-      console.log(data);
+     
+      console.log(JSON.stringify(nodes, null, 2));
 
-      // fetch('http://localhost:8080/data', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(data)
-      // })
-      //   .then(response => response.text())
-      //   .then(data => {
-      //     console.log('Success:', data);
-      //   })
-
+      this.printNodes(nodes);
+      fetch('http://localhost:8080/data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+        .then(response => response.text())
+        .then(data => {
+          console.log('Success:', data);
+        })
+     
     },
-    // findAllPaths(current, target, visited, path, edges) {
-    //   visited[current] = true;
-    //   let allPaths = [];
 
-    //   for (const edgeId in edges) {
-    //     const edge = edges[edgeId];
-    //     if (edge.source === current && !visited[edge.target]) {
-    //       path.push(edgeId);
-    //       if (edge.target === target) {
-    //         allPaths.push({ edges: [...path] });
-    //       } else {
-    //         allPaths = allPaths.concat(this.findAllPaths(edge.target, target, visited, path, edges));
-    //       }
-    //       path.pop();
-    //     }
-    //   }
+    findAllPaths(current, target, visited, path, edges) {
+      visited[current] = true;
+      let allPaths = [];
 
-    //   visited[current] = false;
-    //   return allPaths;
-    // },
+      for (const edgeId in edges) {
+        const edge = edges[edgeId];
+        if (edge.source === current && !visited[edge.target]) {
+          path.push(edgeId);
+          if (edge.target === target) {
+            allPaths.push({ edges: [...path] });
+          } else {
+            allPaths = allPaths.concat(this.findAllPaths(edge.target, target, visited, path, edges));
+          }
+          path.pop();
+        }
+      }
+
+      visited[current] = false;
+      return allPaths;
+    },
+
+
+    //bassam section Dont you dare touch it 55 !!
+    
+    //just findAllForwardPathsAndGains() that you can use to get the forward paths and gains
+    //the funtcion will return list of forward paths and gains (every element in the list is a forward path with it's gain)
+    //and it's output is in this format [{ path: [nodeId1,nodeId2], gain: [X1,X2] }] 
+   
+    findOutputNodeId() {
+      for (const nodeId in this.nodes) {
+        if (this.nodes[nodeId].type === 'output') {
+          return nodeId;
+        }
+      }
+    },
+
+    findInputNodeId() {
+      let inDegree = new Map();
+    
+      for (const nodeId in this.nodes) {
+        inDegree.set(nodeId,true);
+      }
+      // console.log(inDegree);
+
+      for (const edgeId in this.edges) {
+        inDegree.set(this.edges[edgeId].target,false);
+      }
+      // console.log(inDegree);
+
+      for (const [key,value] of inDegree) {
+        // console.log(key,value);
+        if (value) {
+
+          return key;
+        }
+      }
+  
+      
+    },
+
+    findAllForwardPathsAndGains(){
+      let startNode = this.findInputNodeId();
+      console.log("startNode",startNode);
+      let endNode = this.findOutputNodeId();
+       
+      let allPaths = this.findAllPaths(startNode, endNode, {}, [], this.edges);
+      
+      // console.log(JSON.stringify(allPaths, null, 2));
+
+      // let forwardPaths = [];
+      
+      for (const path of allPaths) {
+        let forwardPath = [];
+        let forwardGain = [];
+        forwardPath.push(startNode);
+        
+        for (const edgeId of path.edges) {
+          // console.log(edgeId);
+          // console.log(this.edges[edgeId].label);
+
+          // forwardPath.push(edgeId);
+          forwardPath.push(this.edges[edgeId].target);
+          forwardGain.push(this.edges[edgeId].label);
+        }
+        this.forwardPaths.push({ path: forwardPath, gain: forwardGain });
+      }
+      return this.forwardPaths
+    }, 
+
+    printAllForwardPathsAndGains(forwardPaths){
+      for (const forwardPath of forwardPaths) {
+        console.log(JSON.stringify(forwardPath, null, 2));      }
+    },
+ 
+    //end of bassam section mess anything if you want ;)
 
     remove() {
       if (this.running) {
@@ -199,6 +292,7 @@ export default {
 
       this.nextQueueIndex++;
       this.nextNodeIndex++;
+
     },
     AddEdge() {
       if (this.selectedNodes.length !== 2) {
@@ -216,11 +310,10 @@ export default {
       this.edges[edgeId] = { source, target, color: '#55aaFF', label: this.edgeGain };
       this.nextEdgeIndex++;
     },
+    
     clear() {
       window.location.reload();
     },
-
-
     startDrag(event) {
       this.isDragging = true;
       this.startX = event.clientX - this.x;
