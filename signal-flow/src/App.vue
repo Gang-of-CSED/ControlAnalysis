@@ -69,6 +69,9 @@ export default {
       configs,
       data,
       paths,
+      //all diffrent loops
+      loops:[],
+
       ref
     };
   },
@@ -80,7 +83,7 @@ export default {
     Run() {
       const visited = {};
       // this.paths = this.findAllPaths('node1', 'node2', visited, [], this.edges);
-      console.log(this.paths);
+      // console.log(this.paths);
       this.configs.path.visible = !this.configs.path.visible;
       this.running = true;
 
@@ -99,19 +102,19 @@ export default {
       // }
       // }
       let nodes = {};
-      console.log("nodes:", this.nodes);
+      // console.log("nodes:", this.nodes);
       for (let nodeI in this.nodes) {
         let node = this.nodes[nodeI];
 
-        console.log(nodeI, node);
+        // console.log(nodeI, node);
         nodes[nodeI] = { "name": node.name.split(":")[0], "shape": node.shape, "color": node.color, "main": node.main, "type": node.type, "x": 0, "y": 0 };
-        console.log("node", nodeI, node);
+        // console.log("node", nodeI, node);
       }
 
       let edges = {};
       for (let edgeI in this.edges) {
         let edge = this.edges[edgeI];
-        console.log(edgeI, edge);
+        // console.log(edgeI, edge);
         edges[edgeI] = { "source": edge.source, "target": edge.target, "color": edge.color, "label": edge.label };
       }
 
@@ -120,21 +123,96 @@ export default {
         "edges": edges
       }
 
-      console.log(data);
-
+      
       // fetch('http://localhost:8080/data', {
-      //   method: 'POST',
+        //   method: 'POST',
       //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(data)
-      // })
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify(data)
+        // })
       //   .then(response => response.text())
       //   .then(data => {
       //     console.log('Success:', data);
       //   })
-
+      
+      // console.log("findAllDistinctCycles\n");
+      // console.log(data);
+      // console.log(this.cycles);
+      this.getAllDistinctCycles();
+      // console.log(this.cycles);
     },
+    
+    getAllDistinctCycles() {
+      let visitedMap = {};
+      for (let node of Object.keys(this.nodes)) {
+        visitedMap[node] = false;
+      }
+      let stPath = []; 
+      let stGain = [];
+      this.findAllCycles(visitedMap, stPath, stGain, 'node1');
+
+      console.log("loops-------------------\n");
+        this.loops = Array.from(new Set(this.loops.map(JSON.stringify))).map(JSON.parse);
+        console.log(JSON.stringify(this.loops));
+    },
+
+    findAllCycles(visitedMap, stPath, stGain,  nodeID){
+      stPath = [...stPath, nodeID];
+      stGain = [...stGain];
+      if(visitedMap[nodeID]){
+        let cycle = {path: [], gain: []};
+        cycle.path.push(stPath.pop());
+        cycle.gain.push(stGain.pop());
+        while(stPath[stPath.length - 1] != nodeID){
+          cycle.path.push(stPath.pop());
+          cycle.gain.push(stGain.pop());
+        }
+        this.loops.push(cycle);
+        return;
+      }
+      visitedMap[nodeID] = true;
+      // stPath.push(nodeID);
+      for(let edge of Object.values(this.edges)){
+        if(edge.source == nodeID && visitedMap[nodeID]){
+          stGain.push(edge.label);
+          this.findAllCycles(visitedMap, stPath, stGain, edge.target);
+          stGain.pop();
+        }
+      }
+      visitedMap[nodeID] = false;
+      stPath.pop();
+    },
+
+    // findAllDistinctCycles() {
+    //   let cycles = [];
+    //   let visited = {};
+    //   let path = [];
+    //   let nodes = Object.keys(this.nodes);
+    //   for (let node of nodes) {
+    //     this.findAllCycles(node, node, visited, path, cycles);
+    //   }
+    //   return cycles;
+    // },
+    // findAllCycles(current, start, visited, path, cycles) {
+    //   visited[current] = true;
+    //   path.push(current);
+
+    //   for (let edgeId in this.edges) {
+    //     let edge = this.edges[edgeId];
+    //     if (edge.source === current) {
+    //       if (!visited[edge.target]) {
+    //         this.findAllCycles(edge.target, start, visited, path, cycles);
+    //       } else if (edge.target === start) {
+    //         cycles.push([...path]);
+    //       }
+    //     }
+    //   }
+
+    //   path.pop();
+    //   visited[current] = false;
+    // },
+
     // findAllPaths(current, target, visited, path, edges) {
     //   visited[current] = true;
     //   let allPaths = [];
