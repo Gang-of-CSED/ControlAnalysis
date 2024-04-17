@@ -45,14 +45,15 @@ import algebra from 'algebra.js';
    
     },
     resetValues(){
-      this.forwardPaths = [];
-      this.loops = [];
-      this.transFun = null;
-      this.systemDet = null;
-      this.pathsDet = [];
-      this.forwardPathsOutput = [];
-      this.loopsOutPut = [];
-      this.allCombsOutput = [];
+        this.forwardPaths = [];
+        this.forwardPathsOutput = [];
+        this.loopsOutPut = [];
+        this.allCombsOutput = [];
+        this.pathsDetOutput = [];
+        this.pathsDet = [];
+        this.systemDet = null;
+        this.transFun = null;
+        this.loops = [];
         
     },
     
