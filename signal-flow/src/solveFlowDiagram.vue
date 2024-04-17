@@ -30,6 +30,7 @@ import algebra from 'algebra.js';
       this.solveFlowDiagram();
       this.adjustOutputs();
 
+      console.log("loops",JSON.stringify(this.loops, null, 2));
       console.log("loops",JSON.stringify(this.loopsOutPut, null, 2));
       let combinations = [];
       this.getNonTouchingloopsCombinations(this.loops,0,combinations,[]);
@@ -101,6 +102,7 @@ import algebra from 'algebra.js';
           cycle.path.push(stPath.pop());
           cycle.gain.push(stGain.pop());
         }
+        cycle.path.push(nodeID);
         this.loops.push(cycle);
         return;
       }
@@ -129,11 +131,7 @@ import algebra from 'algebra.js';
       // console.log("loops-------------------\n");
         this.loops = Array.from(new Set(this.loops.map(JSON.stringify))).map(JSON.parse);
         // console.log(JSON.stringify(this.loops));
-    },
-
-    
-    //bassam section Dont you dare touch it 55 !!
-    
+    },    
    
     getForwardPaths(){
       let startNode = this.findInputNodeId();
@@ -195,6 +193,7 @@ import algebra from 'algebra.js';
        this.getNonTouchingloopsCombinations(cycles,i+1,res,[...comb]);
      
     },
+
     getCombinationsSymbols(){
       let combs= [];
       this.getNonTouchingloopsCombinations(this.loops,0,combs,[]);
@@ -209,12 +208,15 @@ import algebra from 'algebra.js';
         this.allCombsOutput[comb.length-1].push(combSybmol);
       }
     },
+
     getBranchName(nodes){
      let branchName = "";
-      for(let node of nodes){
-        branchName += this.nodes[node].name ;
-        if(node != nodes[nodes.length - 1])
+      for(let i=0;i<nodes.length;i++){
+        branchName += this.nodes[nodes[i]].name ;
+        
+        if(i!=nodes.length-1)
           branchName += " -> ";
+      
       }
       return branchName;
     },
@@ -366,9 +368,14 @@ import algebra from 'algebra.js';
         this.loopsOutPut.push({path: loopPath, gain: loopGain});
       }
       this.getCombinationsSymbols();
-      
-      this.transFun=this.transFun.toString()+" / ( "+this.systemDet.toString()+" )";
-      this.systemDet = this.systemDet.toString();
+      if(isNaN(this.systemDet.toString()) || this.systemDet.toString()=="0")
+       this.transFun=this.transFun.toString()+" /  "+this.systemDet.toString()+" ";
+      else{
+        if(this.systemDet!=1)
+        this.transFun=this.transFun.divide(Number(this.systemDet));
+      }
+       this.transFun = this.transFun.toString();
+       this.systemDet = this.systemDet.toString();
     }
    }
     
