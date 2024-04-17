@@ -1,26 +1,26 @@
 import * as Vng from "v-network-graph";
 
 const nodes = {
-  node1: { name: "N2", type: 'queue', shape: 'circle', color: '#11ff55', main: true },
-  node2: { name: "N3", type: 'queue', shape: 'circle', color: '#11ff55', main: true },
-  node3: { name: "N1", type: 'machine', shape: 'circle', color: '#11ff55' },
+  // node1: { name: "N2", type: 'queue', shape: 'circle', color: '#11ff55', main: true },
+  // node2: { name: "N3", type: 'queue', shape: 'circle', color: '#11ff55', main: true },
+  // node3: { name: "N1", type: 'machine', shape: 'circle', color: '#11ff55' },
 };
 
 const edges = {
-  edge1: { source: "node1", target: "node3", color: '#55aaFF', label: 'G1(x)'},
-  edge2: { source: "node3", target: "node2", color: '#55aaFF', label: 'G2(x)'},
+  // edge1: { source: "node1", target: "node3", color: '#55aaFF', label: 'G1(x)'},
+  // edge2: { source: "node3", target: "node2", color: '#55aaFF', label: 'G2(x)'},
 };
 
 const layouts = {
   nodes: {
-    node1: { x: 300, y: 0 },
-    node2: { x: -600, y: 0 },
-    node3: { x: 0, y: 150 },
+    // node1: { x: 300, y: 0 },
+    // node2: { x: -600, y: 0 },
+    // node3: { x: 0, y: 150 },
   },
 };
 
 const paths = {
-  path1: { edges: ["edge1", "edge2"] },
+  // path1: { edges: ["edge1", "edge2"] },
 };
 
 const configs = Vng.defineConfigs({
@@ -50,6 +50,7 @@ const configs = Vng.defineConfigs({
 
   edge: {
     selectable: true,
+    gap: 80,
     hover: {
       width: 8,
       color: edge => edge.color
@@ -61,11 +62,17 @@ const configs = Vng.defineConfigs({
     selected: {
       dasharray: null,
     },
+    selfLoop: {
+      radius: 50,
+      // offset: 20,
+      angle: Math.PI / 2,
+    },
     type: "curve",
   },
   path: {
     selectable: false,
     visible: false,
+    curveInNode: true,
     normal: {
       width: 3,
       dasharray: "10 16",

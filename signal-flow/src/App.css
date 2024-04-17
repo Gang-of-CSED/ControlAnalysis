@@ -67,8 +67,9 @@ input:focus {
     border-radius: 5px;
     background: #80808041;
     backdrop-filter: blur(5px);
-    height: 90%;
-    width: 20%;
+    height: auto;
+    min-height: 90%;
+    width: 40%;
     font-family: 'Courier New', Courier, monospace;
     
 
@@ -79,6 +80,16 @@ input:focus {
     font-weight: 500;
 }
 
+hr{
+    border: 0px;
+    border-top: 1px solid #000;
+}
+
+.inner-hr{
+    border: 0px;
+    border-top: 1px solid #000;
+    width: 80%;
+}
 
 /* 
 .addm:hover::after {
