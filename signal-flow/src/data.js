@@ -50,6 +50,7 @@ const configs = Vng.defineConfigs({
 
   edge: {
     selectable: true,
+    gap: 80,
     hover: {
       width: 8,
       color: edge => edge.color
@@ -61,11 +62,17 @@ const configs = Vng.defineConfigs({
     selected: {
       dasharray: null,
     },
+    selfLoop: {
+      radius: 50,
+      // offset: 20,
+      angle: Math.PI / 2,
+    },
     type: "curve",
   },
   path: {
     selectable: false,
     visible: false,
+    curveInNode: true,
     normal: {
       width: 3,
       dasharray: "10 16",

@@ -42,6 +42,18 @@ import algebra from 'algebra.js';
       }
       console.log("system determinant: ",this.systemDet);
       console.log("transfer function: ",this.transFun);
+
+      // put all data in an object to return it
+      let data = {
+        forwardPaths: this.forwardPathsOutput,
+        loops: this.loopsOutPut,
+        allCombs: this.allCombsOutput,
+        pathsDet: this.pathsDetOutput,
+        systemDet: this.systemDet,
+        transFun: this.transFun,
+      };
+      // emit the data to the parent component
+      this.$emit('data', data);
    
     },
     resetValues(){
@@ -348,7 +360,8 @@ import algebra from 'algebra.js';
         this.pathsDetOutput.push(pathDet.toString());
       }
       for(let loop of this.loops){
-        let loopPath = this.getBranchName(loop.path);
+        let reverseLoop = loop.path.slice().reverse();
+        let loopPath = this.getBranchName(reverseLoop);
         let loopGain = this.getBranchGain(loop.gain).toString();
         this.loopsOutPut.push({path: loopPath, gain: loopGain});
       }

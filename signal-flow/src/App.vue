@@ -2,7 +2,7 @@
    
   <div class="all">
     <template>
-      <solveFlowDiagram ref="childRef" :nodes="nodes" :edges="edges"/>
+      <solveFlowDiagram ref="childRef" :nodes="nodes" :edges="edges" @data="solution = $event" />
     </template>
 
     <v-network-graph v-model:selected-nodes="selectedNodes" v-model:selected-edges="selectedEdges"
@@ -37,11 +37,31 @@
 
     <!-- section for analysised data -->
     <div class="data">
-      <h1>Analysis</h1>
-      <h2>Transfer Function</h2>
-      <h2>Paths</h2>
+      <!-- display solution -->
+      <h1>Solution</h1>
+      <h2>Transfer Function: <br/>{{solution.transFun}}</h2>
+      <hr/>
+      <h2>System Determinant:<br/> {{solution.systemDet}}</h2>
+      <hr/>
+      <h2>Forward Paths</h2>
+      <hr/>
+      <div v-for="path in solution.forwardPaths">
+        <h3>{{path.path}}: {{path.gain}}</h3>
+        <h3>Path Determinant : {{solution.pathsDet[solution.forwardPaths.indexOf(path)]}}</h3>
+        <hr class="inner-hr"/>
+      </div>
       <h2>Loops</h2>
-      <h2>Determinants</h2>
+      <hr/>
+      <div v-for="loop in solution.loops">
+        <h3>{{loop.path}}: {{loop.gain}}</h3>
+        <hr class="inner-hr"/>
+      </div>
+      <h2>Non-Touching Loops Combinations</h2>
+      <hr/>
+      <div v-for="comb in solution.allCombs">
+        <h3>{{comb}}</h3>
+        <hr class="inner-hr"/>
+      </div>
 
     </div>
   
@@ -80,6 +100,7 @@ export default {
       configs,
       data,
       paths,
+      solution:{},
       
       // forwardPaths: [],
       // // to show the output only
