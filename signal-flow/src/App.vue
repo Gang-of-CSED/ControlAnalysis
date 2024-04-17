@@ -44,6 +44,7 @@
 
 <script>
 import * as vNG from "v-network-graph"
+import algebra from 'algebra.js';
 
 export default {
   name: 'App',
@@ -69,9 +70,17 @@ export default {
       configs,
       data,
       paths,
+      
+      forwardPaths: [],
 
-      forwardPaths: [{ path: [], gain: [] }],
-   
+      outputForwardPaths: [],
+      outputloops: [],
+      outputAllCombs: [],
+      outputpathsDet:[],
+      
+      pathsDet:[],
+      systemDet:null,
+      transFun:null,
       //  forWardGains: [],//bassam
 
       //all diffrent loops
@@ -91,94 +100,54 @@ export default {
   },
   methods: {
     Run() {
-      // // bassam bullshit just to test the function 
+      this.resetValues();
+      this.solveFlowDiagram();
+      this.adjustOutputs();
 
-      //   console.log(JSON.stringify(this.nodes, null, 2));
-      //   console.log(JSON.stringify(this.edges, null, 2));
-      //    this.findAllForwardPathsAndGains();
-      //    this.printAllForwardPathsAndGains(this.forwardPaths);
+      console.log("loops",JSON.stringify(this.outputloops, null, 2));
+      let combinations = [];
+      this.getNonTouchingloopsCombinations(this.loops,0,combinations,[]);
+      // console.log("combinations",JSON.stringify(combinations, null, 2));
 
-      // // end of bassam bullshit  
-
+      console.log("system determinant: ",this.systemDet.toString());
       
+      for(let i=0;i<this.pathsDet.length;i++){
+        console.log("path: ",this.outputForwardPaths[i].path,"\ngain:",this.outputForwardPaths[i].gain.toString(),"\ndeterminant:",this.pathsDet[i].toString());
+      }
+      console.log("transfer function: ",this.transFun);
    
-      const visited = {};
-      // this.paths = this.findAllPaths('node1', 'node2', visited, [], this.edges);
-      // console.log(this.paths);
-      this.configs.path.visible = !this.configs.path.visible;
-      // this.running = true;
-
-      // create fetch post request with payloads in following format
-      // {
-      //   "nodes": {
-      // "node1":{ "name": "Start Node", "shape": "circle", "color": "green","main": true,"type":"queue","x":0,"y":0},
-      // "node2":{ "name": "End Node", "shape": "circle", "color": "green","main": true,"type":"queue","x":0,"y":0},
-      // "node3":{ "name": "Q1", "shape": "circle", "color": "green","main": true,"type":"queue","x":0,"y":0},
-      // "node4":{ "name": "M1", "shape": "square", "color": "red","main": true,"type":"machine","x":0,"y":0},
-      // }
-      //   "edges": {
-      // "edge1":{ "source": "node1", "target": "node3", "color": "black","label":"G1(x)"},
-      // "edge2":{ "source": "node3", "target": "node4", "color": "black","label":"G2(x)"},
-      // "edge3":{ "source": "node4", "target": "node2", "color": "black","label":"G3(x)"},
-      // }
-      // }
-      let nodes = {};
-      // console.log("nodes:", this.nodes);
-      for (let nodeI in this.nodes) {
-        let node = this.nodes[nodeI];
-
-        // console.log(nodeI, node);
-        nodes[nodeI] = { "name": node.name.split(":")[0], "shape": node.shape, "color": node.color, "main": node.main, "type": node.type, "x": 0, "y": 0 };
-        // console.log("node", nodeI, node);
-      }
-
-      let edges = {};
-      for (let edgeI in this.edges) {
-        let edge = this.edges[edgeI];
-        // console.log(edgeI, edge);
-        edges[edgeI] = { "source": edge.source, "target": edge.target, "color": edge.color, "label": edge.label };
-      }
-
-      let data = {
-        "nodes": nodes,
-        "edges": edges
-      }
-
-
+    },
+    resetValues(){
+      this.forwardPaths = [];
+      this.loops = [];
+      this.transFun = null;
+      this.systemDet = null;
+      this.pathsDet = [];
+      this.outputForwardPaths = [];
       
-      // fetch('http://localhost:8080/data', {
-        //   method: 'POST',
-      //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify(data)
-        // })
-      //   .then(response => response.text())
-      //   .then(data => {
-      //     console.log('Success:', data);
-      //   })
-      
-      // console.log("findAllDistinctCycles\n");
-      // console.log(data);
-      // console.log(this.cycles);
-      this.getAllDistinctCycles();
-      // console.log(this.cycles);
     },
     
-    getAllDistinctCycles() {
-      let visitedMap = {};
-      for (let node of Object.keys(this.nodes)) {
-        visitedMap[node] = false;
+    findAllPaths(current, target, visited, path, edges) {
+      visited[current] = true;
+      let allPaths = [];
+
+      for (const edgeId in edges) {
+        const edge = edges[edgeId];
+        if (edge.source === current && !visited[edge.target]) {
+          path.push(edgeId);
+          if (edge.target === target) {
+            allPaths.push({ edges: [...path] });
+          } else {
+            allPaths = allPaths.concat(this.findAllPaths(edge.target, target, visited, path, edges));
+          }
+          path.pop();
+        }
       }
-      let stPath = []; 
-      let stGain = [];
-      this.findAllCycles(visitedMap, stPath, stGain, 'node1');
 
-      console.log("loops-------------------\n");
-        this.loops = Array.from(new Set(this.loops.map(JSON.stringify))).map(JSON.parse);
-        console.log(JSON.stringify(this.loops));
+      visited[current] = false;
+      return allPaths;
     },
-
+    
     findAllCycles(visitedMap, stPath, stGain,  nodeID){
       stPath = [...stPath, nodeID];
       stGain = [...stGain];
@@ -206,68 +175,204 @@ export default {
       stPath.pop();
     },
 
-    // findAllDistinctCycles() {
-    //   let cycles = [];
-    //   let visited = {};
-    //   let path = [];
-    //   let nodes = Object.keys(this.nodes);
-    //   for (let node of nodes) {
-    //     this.findAllCycles(node, node, visited, path, cycles);
-    //   }
-    //   return cycles;
-    // },
-    // findAllCycles(current, start, visited, path, cycles) {
-    //   visited[current] = true;
-    //   path.push(current);
-
-    //   for (let edgeId in this.edges) {
-    //     let edge = this.edges[edgeId];
-    //     if (edge.source === current) {
-    //       if (!visited[edge.target]) {
-    //         this.findAllCycles(edge.target, start, visited, path, cycles);
-    //       } else if (edge.target === start) {
-    //         cycles.push([...path]);
-    //       }
-    //     }
-    //   }
-
-    //   path.pop();
-    //   visited[current] = false;
-    // },
-
-    // findAllPaths(current, target, visited, path, edges) {
-    //   visited[current] = true;
-    //   let allPaths = [];
-
-
-    findAllPaths(current, target, visited, path, edges) {
-      visited[current] = true;
-      let allPaths = [];
-
-      for (const edgeId in edges) {
-        const edge = edges[edgeId];
-        if (edge.source === current && !visited[edge.target]) {
-          path.push(edgeId);
-          if (edge.target === target) {
-            allPaths.push({ edges: [...path] });
-          } else {
-            allPaths = allPaths.concat(this.findAllPaths(edge.target, target, visited, path, edges));
-          }
-          path.pop();
-        }
+    getAllDistinctCycles() {
+      let visitedMap = {};
+      for (let node of Object.keys(this.nodes)) {
+        visitedMap[node] = false;
       }
+      let stPath = []; 
+      let stGain = [];
+      this.findAllCycles(visitedMap, stPath, stGain, 'node1');
 
-      visited[current] = false;
-      return allPaths;
+      // console.log("loops-------------------\n");
+        this.loops = Array.from(new Set(this.loops.map(JSON.stringify))).map(JSON.parse);
+        // console.log(JSON.stringify(this.loops));
     },
 
-
+    
     //bassam section Dont you dare touch it 55 !!
-
-    //just findAllForwardPathsAndGains() that you can use to get the forward paths and gains
-    //the funtcion will return list of forward paths and gains (every element in the list is a forward path with it's gain)
-    //and it's output is in this format [{ path: [nodeId1,nodeId2], gain: [X1,X2] }] 
+    
    
+    getForwardPaths(){
+      let startNode = this.findInputNodeId();
+      let endNode = this.findOutputNodeId();
+       
+      let allPaths = this.findAllPaths(startNode, endNode, {}, [], this.edges);
+      
+      for (const path of allPaths) {
+        let forwardPath = [];
+        let forwardGain = [];
+        forwardPath.push(startNode);
+        
+        for (const edgeId of path.edges) {
+          forwardPath.push(this.edges[edgeId].target);
+          forwardGain.push(this.edges[edgeId].label);
+        }
+        this.forwardPaths.push({ path: forwardPath, gain: forwardGain });
+      }
+      return this.forwardPaths
+    }, 
+
+    getCyclesNotTouchingPath(path){
+      let cycles = [];
+
+      for(let cycle of this.loops){
+        let flag = true;
+
+        for(let node of path){
+          if(cycle.path.includes(node)){
+            flag = false;
+            break;
+          }
+        }
+        if(flag){
+          cycles.push(cycle);
+        }
+      }
+      return cycles;
+    },
+   
+    getNonTouchingloopsCombinations(cycles,i,res,comb,){
+     if(i >= cycles.length){
+      if(comb.length > 0) 
+      res.push(comb);
+       return;
+     }
+     let flag = true;
+     for(let j=0;j<comb.length;j++){
+        for(let node of cycles[i].path){
+          if(comb[j].path.includes(node)){
+            flag = false;
+            break;
+          }
+        }
+     }
+      if(flag){
+        this.getNonTouchingloopsCombinations(cycles,i+1,res,[...comb,cycles[i]]);
+      }
+       this.getNonTouchingloopsCombinations(cycles,i+1,res,[...comb]);
+     
+    },
+    
+    getBranchName(nodes){
+     let branchName = "";
+      for(let node of nodes){
+        branchName += this.nodes[node].name ;
+        if(node != nodes[nodes.length - 1])
+          branchName += " -> ";
+      }
+      return branchName;
+    },
+
+    getBranchGain(nodesGains){
+      const algebra = require('algebra.js');
+      let branchGain = new algebra.parse("1");
+      for(let gain of nodesGains){
+        let eq;
+        if(isNaN(gain)&& gain[0] == "-"){
+          gain = gain.substring(1);
+          eq = new algebra.parse(gain);
+        }
+        else
+          eq = new algebra.parse(gain);
+
+        branchGain = eq.multiply(branchGain);
+      }
+      return branchGain;
+    },
+
+    getCombinationsGains(path){
+      let cycles = this.getCyclesNotTouchingPath(path);
+      let combinations = [];
+
+      this.getNonTouchingloopsCombinations(cycles,0,combinations,[]);
+      
+      let gains= [];
+      gains[0] = [];
+      const algebra = require('algebra.js');
+
+      for(let comb of combinations){
+        let combGain = 1;
+
+        for(let cycle of comb){
+         
+          for(let gain of cycle.gain){
+           let eq ;
+           if(isNaN(gain)){
+            if(gain[0] == "-")
+            eq = new algebra.Expression(-1).multiply(gain.substring(1));
+            else  
+            eq = new algebra.Expression(gain);
+           }
+           else
+            eq = new algebra.parse(gain.toString());
+           
+            combGain = eq.multiply(combGain);
+          }
+        }
+
+        if (!gains[comb.length]) {
+            gains[comb.length] = [];
+        }
+        gains[comb.length].push(combGain);
+      }
+      return gains;
+    },
+    determinantOfPath(path){
+
+      // let cycles = this.getCyclesNotTouchingPath(path);
+      // let combinations = [];
+
+      // this.getNonTouchingloopsCombinations(cycles,0,combinations,[]);
+      
+      // let gains= [];
+      // gains[0] = [];
+      // const algebra = require('algebra.js');
+
+      // for(let comb of combinations){
+      //   let combGain = 1;
+
+      //   for(let cycle of comb){
+         
+      //     for(let gain of cycle.gain){
+      //      let eq ;
+      //      if(isNaN(gain))
+      //       eq = new algebra.Expression(gain);
+      //      else
+      //       eq = new algebra.parse(gain.toString());
+           
+      //       combGain = eq.multiply(combGain);
+      //     }
+      //   }
+
+      //   if (!gains[comb.length]) {
+      //       gains[comb.length] = [];
+      //   }
+      //   gains[comb.length].push(combGain);
+      // }
+
+      let gains = this.getCombinationsGains(path);
+
+      let result = new algebra.Expression("1");
+      for(let i=1;i<gains.length;i++){
+        let sum =new algebra.parse("0");
+
+        for(let j=0;j<gains[i].length;j++){
+          sum = sum.add(gains[i][j]);
+        }
+
+        if(i%2 == 0)
+          result = result.add(sum);
+        else
+         result = result.subtract(sum);
+      }
+      
+      result = result.simplify();
+
+      return result;
+
+    },
+ 
     findOutputNodeId() {
       for (const nodeId in this.nodes) {
         if (this.nodes[nodeId].type === 'output') {
@@ -282,58 +387,63 @@ export default {
       for (const nodeId in this.nodes) {
         inDegree.set(nodeId,true);
       }
-      // console.log(inDegree);
-
       for (const edgeId in this.edges) {
         inDegree.set(this.edges[edgeId].target,false);
       }
-      // console.log(inDegree);
-
       for (const [key,value] of inDegree) {
-        // console.log(key,value);
-        if (value) {
-
+        if (value) 
           return key;
-        }
+        
       }
   
       
     },
 
-    findAllForwardPathsAndGains(){
-      let startNode = this.findInputNodeId();
-      console.log("startNode",startNode);
-      let endNode = this.findOutputNodeId();
+    solveFlowDiagram(){
+      this.getForwardPaths();
+      this.getAllDistinctCycles();
+      
+       this.systemDet = this.determinantOfPath([]);
+        let branchGains = [];
+       for(let path of this.forwardPaths){
+
+          this.pathsDet.push(this.determinantOfPath(path.path));
+          let branchGain = this.getBranchGain(path.gain);
+          branchGains.push(branchGain);
+          // this.outputForwardPaths.push({path: branchName, gain: branchGain});
+       }
        
-      let allPaths = this.findAllPaths(startNode, endNode, {}, [], this.edges);
-      
-      // console.log(JSON.stringify(allPaths, null, 2));
+        this.transFun=algebra.parse("0");
 
-      // let forwardPaths = [];
-      
-      for (const path of allPaths) {
-        let forwardPath = [];
-        let forwardGain = [];
-        forwardPath.push(startNode);
+         for(let i=0;i<this.pathsDet.length;i++){
+           let eq = algebra.parse(this.pathsDet[i].toString());
+           let pathGain = eq.multiply(branchGains[i]);
+           this.transFun = this.transFun.add(pathGain);
+         }
+       
+         this.transFun.simplify();
         
-        for (const edgeId of path.edges) {
-          // console.log(edgeId);
-          // console.log(this.edges[edgeId].label);
-
-          // forwardPath.push(edgeId);
-          forwardPath.push(this.edges[edgeId].target);
-          forwardGain.push(this.edges[edgeId].label);
-        }
-        this.forwardPaths.push({ path: forwardPath, gain: forwardGain });
-      }
-      return this.forwardPaths
-    }, 
-
-    printAllForwardPathsAndGains(forwardPaths){
-      for (const forwardPath of forwardPaths) {
-        console.log(JSON.stringify(forwardPath, null, 2));      }
     },
- 
+
+    adjustOutputs(){
+      
+      for(let path of this.forwardPaths){
+        let branchName = this.getBranchName(path.path);
+        let branchGain = this.getBranchGain(path.gain).toString();
+        this.outputForwardPaths.push({path: branchName, gain: branchGain});
+      }
+      for(let pathDet of this.pathsDet){
+        this.outputpathsDet.push(pathDet.toString());
+      }
+      for(let loop of this.loops){
+        let loopName = this.getBranchName(loop.path);
+        let loopGain = this.getBranchGain(loop.gain).toString();
+        this.outputloops.push({path: loopName, gain: loopGain});
+      }
+      this.transFun=this.transFun.toString()+" / ( "+this.systemDet.toString()+" )";
+
+    },
+
     //end of bassam section mess anything if you want ;)
 
     remove() {
@@ -382,8 +492,9 @@ export default {
 
     },
     AddEdge() {
-      if (this.selectedNodes.length !== 2) {
-        alert('Please select two nodes to connect.');
+      if (this.selectedNodes.length !== 2 && this.selectedNodes.length !== 1) {
+        alert('Please select one\\two nodes to connect.');
+       
         return;
       }
 
@@ -391,8 +502,12 @@ export default {
         alert('Please enter the edge gain.');
         return;
       }
+      
+       if(this.selectedNodes.length === 1)
+          this.selectedNodes.push(this.selectedNodes[0]);
 
       const [source, target] = this.selectedNodes;
+  
       const edgeId = `edge${this.nextEdgeIndex}`;
       this.edges[edgeId] = { source, target, color: '#55aaFF', label: this.edgeGain };
       this.nextEdgeIndex++;
@@ -428,7 +543,38 @@ export default {
         `rotate(${degree})`,
       ].join(" ")
     },
+ // findAllDistinctCycles() {
+    //   let cycles = [];
+    //   let visited = {};
+    //   let path = [];
+    //   let nodes = Object.keys(this.nodes);
+    //   for (let node of nodes) {
+    //     this.findAllCycles(node, node, visited, path, cycles);
+    //   }
+    //   return cycles;
+    // },
+    // findAllCycles(current, start, visited, path, cycles) {
+    //   visited[current] = true;
+    //   path.push(current);
 
+    //   for (let edgeId in this.edges) {
+    //     let edge = this.edges[edgeId];
+    //     if (edge.source === current) {
+    //       if (!visited[edge.target]) {
+    //         this.findAllCycles(edge.target, start, visited, path, cycles);
+    //       } else if (edge.target === start) {
+    //         cycles.push([...path]);
+    //       }
+    //     }
+    //   }
+
+    //   path.pop();
+    //   visited[current] = false;
+    // },
+
+    // findAllPaths(current, target, visited, path, edges) {
+    //   visited[current] = true;
+    //   let allPaths = [];
   }
 }
 
