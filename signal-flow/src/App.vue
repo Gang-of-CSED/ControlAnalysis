@@ -1,5 +1,7 @@
 <template>
+
   <div class="all">
+    <!-- <solveFlowDiagram :nodes="nodes" :edges="edges" /> -->
     <v-network-graph v-model:selected-nodes="selectedNodes" v-model:selected-edges="selectedEdges"
       :selected-edges="selectedEdges" :nodes="nodes" :edges="edges" :paths="paths" :layouts="data.layouts"
       :configs="configs">
@@ -11,7 +13,7 @@
       </template>
       <template #edge-label="{ edgeId, edge, scale, ...slotProps }">
         <v-edge-label :text="edge.label" align="center" vertical-align="above" v-bind="slotProps"
-          :font-size="30 * scale" fill="#ff5500" />
+          :font-size="20 * scale" fill="#ff5500" />
 
       </template>
 
@@ -39,12 +41,15 @@
       <h2>Determinants</h2>
 
     </div>
+  
   </div>
+
 </template>
 
 <script>
 import * as vNG from "v-network-graph"
 import algebra from 'algebra.js';
+// import solveFlowDiagram from "./solveFlowDiagram.vue";
 
 export default {
   name: 'App',
@@ -72,18 +77,16 @@ export default {
       paths,
       
       forwardPaths: [],
+      // to show the output only
+      forwardPathsOutput: [],
+      loopsOutPut: [],
+      allCombsOutput: [],
+      pathsDetOutput:[],
 
-      outputForwardPaths: [],
-      outputloops: [],
-      outputAllCombs: [],
-      outputpathsDet:[],
-      
+      // 
       pathsDet:[],
       systemDet:null,
       transFun:null,
-      //  forWardGains: [],//bassam
-
-      //all diffrent loops
       loops:[],
 
       ref
@@ -104,16 +107,17 @@ export default {
       this.solveFlowDiagram();
       this.adjustOutputs();
 
-      console.log("loops",JSON.stringify(this.outputloops, null, 2));
+      console.log("loops",JSON.stringify(this.loopsOutPut, null, 2));
       let combinations = [];
       this.getNonTouchingloopsCombinations(this.loops,0,combinations,[]);
-      // console.log("combinations",JSON.stringify(combinations, null, 2));
+      console.log("loop combinations",JSON.stringify(this.allCombsOutput, null, 2));
 
-      console.log("system determinant: ",this.systemDet.toString());
+     
       
       for(let i=0;i<this.pathsDet.length;i++){
-        console.log("path: ",this.outputForwardPaths[i].path,"\ngain:",this.outputForwardPaths[i].gain.toString(),"\ndeterminant:",this.pathsDet[i].toString());
+        console.log("path: ",this.forwardPathsOutput[i].path,"\ngain:",this.forwardPathsOutput[i].gain,"\ndeterminant:",this.pathsDetOutput[i]);
       }
+      console.log("system determinant: ",this.systemDet);
       console.log("transfer function: ",this.transFun);
    
     },
@@ -123,7 +127,7 @@ export default {
       this.transFun = null;
       this.systemDet = null;
       this.pathsDet = [];
-      this.outputForwardPaths = [];
+      this.forwardPathsOutput = [];
       
     },
     
@@ -232,7 +236,7 @@ export default {
       return cycles;
     },
    
-    getNonTouchingloopsCombinations(cycles,i,res,comb,){
+    getNonTouchingloopsCombinations(cycles,i,res,comb){
      if(i >= cycles.length){
       if(comb.length > 0) 
       res.push(comb);
@@ -253,7 +257,20 @@ export default {
        this.getNonTouchingloopsCombinations(cycles,i+1,res,[...comb]);
      
     },
-    
+    getCombinationsSymbols(){
+      let combs= [];
+      this.getNonTouchingloopsCombinations(this.loops,0,combs,[]);
+      for(let comb of combs){
+        let combSybmol=""
+        for(let cycle of comb){
+          let indexOfCycle = this.loops.indexOf(cycle);
+          combSybmol +="L"+(indexOfCycle+1).toString();
+        }
+        if(!this.allCombsOutput[comb.length-1])
+          this.allCombsOutput[comb.length-1] = [];
+        this.allCombsOutput[comb.length-1].push(combSybmol);
+      }
+    },
     getBranchName(nodes){
      let branchName = "";
       for(let node of nodes){
@@ -318,42 +335,12 @@ export default {
       }
       return gains;
     },
+
     determinantOfPath(path){
-
-      // let cycles = this.getCyclesNotTouchingPath(path);
-      // let combinations = [];
-
-      // this.getNonTouchingloopsCombinations(cycles,0,combinations,[]);
-      
-      // let gains= [];
-      // gains[0] = [];
-      // const algebra = require('algebra.js');
-
-      // for(let comb of combinations){
-      //   let combGain = 1;
-
-      //   for(let cycle of comb){
-         
-      //     for(let gain of cycle.gain){
-      //      let eq ;
-      //      if(isNaN(gain))
-      //       eq = new algebra.Expression(gain);
-      //      else
-      //       eq = new algebra.parse(gain.toString());
-           
-      //       combGain = eq.multiply(combGain);
-      //     }
-      //   }
-
-      //   if (!gains[comb.length]) {
-      //       gains[comb.length] = [];
-      //   }
-      //   gains[comb.length].push(combGain);
-      // }
 
       let gains = this.getCombinationsGains(path);
 
-      let result = new algebra.Expression("1");
+      let result = new algebra.parse("1");
       for(let i=1;i<gains.length;i++){
         let sum =new algebra.parse("0");
 
@@ -410,7 +397,6 @@ export default {
           this.pathsDet.push(this.determinantOfPath(path.path));
           let branchGain = this.getBranchGain(path.gain);
           branchGains.push(branchGain);
-          // this.outputForwardPaths.push({path: branchName, gain: branchGain});
        }
        
         this.transFun=algebra.parse("0");
@@ -429,19 +415,21 @@ export default {
       
       for(let path of this.forwardPaths){
         let branchName = this.getBranchName(path.path);
-        let branchGain = this.getBranchGain(path.gain).toString();
-        this.outputForwardPaths.push({path: branchName, gain: branchGain});
+        let branchGain = this.getBranchGain(path.gain);
+        this.forwardPathsOutput.push({path: branchName, gain: branchGain.toString()});
       }
       for(let pathDet of this.pathsDet){
-        this.outputpathsDet.push(pathDet.toString());
+        this.pathsDetOutput.push(pathDet.toString());
       }
       for(let loop of this.loops){
-        let loopName = this.getBranchName(loop.path);
+        let loopPath = this.getBranchName(loop.path);
         let loopGain = this.getBranchGain(loop.gain).toString();
-        this.outputloops.push({path: loopName, gain: loopGain});
+        this.loopsOutPut.push({path: loopPath, gain: loopGain});
       }
+      this.getCombinationsSymbols();
+      
       this.transFun=this.transFun.toString()+" / ( "+this.systemDet.toString()+" )";
-
+      this.systemDet = this.systemDet.toString();
     },
 
     //end of bassam section mess anything if you want ;)
@@ -509,7 +497,7 @@ export default {
       const [source, target] = this.selectedNodes;
   
       const edgeId = `edge${this.nextEdgeIndex}`;
-      this.edges[edgeId] = { source, target, color: '#55aaFF', label: this.edgeGain };
+      this.edges[edgeId] = { source, target, color: '#55aaFF', label: this.edgeGain ,type: 'curve'};
       this.nextEdgeIndex++;
     },
     
