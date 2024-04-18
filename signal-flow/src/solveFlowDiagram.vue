@@ -229,6 +229,7 @@ import algebra from 'algebra.js';
         if(isNaN(gain)&& gain[0] == "-"){
           gain = gain.substring(1);
           eq = new algebra.parse(gain);
+          eq = eq.multiply(-1);
         }
         else
           eq = new algebra.parse(gain);

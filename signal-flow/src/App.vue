@@ -39,7 +39,7 @@
     <div class="data">
       <!-- display solution -->
       <h1>Solution</h1>
-      <h3>Transfer Function: {{solution.transFun}}</h3>
+      <h3>Transfer Function: <br>{{solution.transFun}}</h3>
       <!-- <hr/> -->
       <!-- <h3>System Determinant: {{solution.systemDet}}</h3> -->
       <h3>△ = {{solution.systemDet}}</h3>
@@ -62,7 +62,7 @@
       </div>
       <hr/>
       <h3>Non-Touching Loops Combinations</h3>
-      <hr/>
+      
       <div  v-for="(comb, index) in solution.allCombs">
         <h3>N={{ index +1}}: {{comb}}</h3>
         <hr class="inner-hr"  v-if="solution.allCombs[index + 1]"/>
