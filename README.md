@@ -4,7 +4,6 @@
 
 ## **Overview**
 
----
 
 This project involves developing a software application capable of visualizing and analyzing signal flow graphs. The application will allow users to draw nodes and branch gains of a signal flow graph to provide a graphical representation of the graph, list all forward paths and loops, calculate system determinant Δ and paths determinant Δ1,Δ2..Δn , and compute the overall system transfer function. by Manon's rule.
 
@@ -12,7 +11,7 @@ This project involves developing a software application capable of visualizing a
 
 ## **Features**
 
----
+
 
 1. **Dynamic UI Setup:**
     - Users can graphically add nodes via the UI, connecting them arbitrarily for a flexible simulation setup.
@@ -25,7 +24,7 @@ This project involves developing a software application capable of visualizing a
 
 ### **Algorithms Implemented**
 
----
+
 
 1. **Graph Traversal for Finding All Paths**:
     - **Objective**: Identify all forward paths from an input node to an output node in the signal flow graph.
@@ -48,7 +47,7 @@ This project involves developing a software application capable of visualizing a
 
 ## User Guide
 
----
+
 
 ![Untitled](assets/Untitled%201.png)
 
@@ -72,8 +71,6 @@ This project involves developing a software application capable of visualizing a
     ## Sample Runs
     
     ![Untitled](assets/Untitled%202.png)
-    
-    ---
     
     ![Untitled](assets/Untitled.png)
     
