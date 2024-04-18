@@ -73,7 +73,6 @@ This project involves developing a software application capable of visualizing a
     
     ![Untitled](assets/Untitled%202.png)
     
-    ---
     
     ![Untitled](assets/Untitled.png)
     
@@ -131,15 +130,15 @@ This project involves developing a software application capable of visualizing a
     
     - $G(S)\cdot H(S) = \frac{1}{s^4+2s^3+3s^2+4s+5}$
         
-        ![Untitled](assets/Untitled%207.png)
+        ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%206.png)
         
     - $G(S)\cdot H(S) = \frac{s(s+1)}{s^5+2s^4+3s^3+6s^2+5s+3}$
         
-        ![Untitled](assets/Untitled%208.png)
+        ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%207.png)
         
     - $G(S)\cdot H(S) = \frac{s+5}{s^5+2s^4+24s^3+48s^2-25s-50}$
         
-        ![Untitled](assets/Untitled%209.png)
+        ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%208.png)
         
     
     ### **User Guide:**
