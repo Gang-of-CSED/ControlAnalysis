@@ -4,14 +4,12 @@
 
 ## **Overview**
 
----
 
 This project involves developing a software application capable of visualizing and analyzing signal flow graphs. The application will allow users to draw nodes and branch gains of a signal flow graph to provide a graphical representation of the graph, list all forward paths and loops, calculate system determinant Δ and paths determinant Δ1,Δ2..Δn , and compute the overall system transfer function. by Manon's rule.
 
 ![Untitled](assets/Untitled1.png)
 
 ## **Features**
-
 
 1. **Dynamic UI Setup:**
     - Users can graphically add nodes via the UI, connecting them arbitrarily for a flexible simulation setup.
@@ -79,9 +77,7 @@ This project involves developing a software application capable of visualizing a
     ![Untitled](assets/Untitled6.png)
     
     # 2-Routh-Hurwitz Criterion & Root Locus Plotter
-    
-    ![https://www.notion.soassets/test3.png](https://www.notion.soassets/test3.png)
-    
+        
     ### **Problem Statement:**
     
     **Given:**
