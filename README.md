@@ -71,21 +71,16 @@ This project involves developing a software application capable of visualizing a
     
     ## Sample Runs
     
-    ![Untitled](assets
-/Untitled%202.png)
+    ![Untitled](assets/Untitled%202.png)
     
     
-    ![Untitled](assets
-/Untitled.png)
+    ![Untitled](assets/Untitled.png)
     
-    ![Untitled](assets
-/Untitled%203.png)
+    ![Untitled](assets/Untitled%203.png)
     
-    ![Untitled](assets
-/Untitled%204.png)
+    ![Untitled](assets/Untitled%204.png)
     
-    ![Untitled](assets
-/Untitled%205.png)
+    ![Untitled](assets/Untitled%205.png)
     
     # 2-Routh-Hurwitz Criterion & Root Locus Plotter
     
@@ -155,18 +150,15 @@ This project involves developing a software application capable of visualizing a
     
     - $G(S)\cdot H(S) = \frac{1}{s^4+2s^3+3s^2+4s+5}$
         
-        ![Untitled](assets
-    /Untitled%206.png)
+        ![Untitled](assets/Untitled%206.png)
         
     - $G(S)\cdot H(S) = \frac{s(s+1)}{s^5+2s^4+3s^3+6s^2+5s+3}$
         
-        ![Untitled](assets
-    /Untitled%207.png)
+        ![Untitled](assets/Untitled%207.png)
         
     - $G(S)\cdot H(S) = \frac{s+5}{s^5+2s^4+24s^3+48s^2-25s-50}$
         
-        ![Untitled](assets
-    /Untitled%208.png)
+        ![Untitled](assets/Untitled%208.png)
         
     
     ### **User Guide:**
