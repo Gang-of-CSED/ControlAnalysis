@@ -49,7 +49,7 @@ This project involves developing a software application capable of visualizing a
 
 ---
 
-![Untitled](assets/Untitled%201.png)
+![Untitled](assets/Untitled2.png)
 
 1. **Adding Nodes:**
     - To add a non-output node , click the 🟢 button in the UI.
@@ -70,8 +70,7 @@ This project involves developing a software application capable of visualizing a
     
     ## Sample Runs
     
-    ![Untitled](assets/Untitled%202.png)
-    
+    ![Untitled](assets/Untitled3.png)
     
     ![Untitled](assets/Untitled4.png)
     
