@@ -1,6 +1,6 @@
 # Control Systems Analysis
 
-## 1-Signal Flow Graphs Solver
+# 1-Signal Flow Graphs Solver
 
 ## **Overview**
 
@@ -8,7 +8,7 @@
 
 This project involves developing a software application capable of visualizing and analyzing signal flow graphs. The application will allow users to draw nodes and branch gains of a signal flow graph to provide a graphical representation of the graph, list all forward paths and loops, calculate system determinant Δ and paths determinant Δ1,Δ2..Δn , and compute the overall system transfer function. by Manon's rule.
 
-![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled.png)
+![Untitled](assets/Untitled.png)
 
 ## **Features**
 
@@ -50,7 +50,7 @@ This project involves developing a software application capable of visualizing a
 
 ---
 
-![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%201.png)
+![Untitled](assets/Untitled%201.png)
 
 1. **Adding Nodes:**
     - To add a non-output node , click the 🟢 button in the UI.
@@ -71,17 +71,21 @@ This project involves developing a software application capable of visualizing a
     
     ## Sample Runs
     
-    ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%202.png)
+    ![Untitled](assets
+/Untitled%202.png)
     
-    ---
     
-    ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled.png)
+    ![Untitled](assets
+/Untitled.png)
     
-    ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%203.png)
+    ![Untitled](assets
+/Untitled%203.png)
     
-    ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%204.png)
+    ![Untitled](assets
+/Untitled%204.png)
     
-    ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%205.png)
+    ![Untitled](assets
+/Untitled%205.png)
     
     # 2-Routh-Hurwitz Criterion & Root Locus Plotter
     
@@ -151,15 +155,18 @@ This project involves developing a software application capable of visualizing a
     
     - $G(S)\cdot H(S) = \frac{1}{s^4+2s^3+3s^2+4s+5}$
         
-        ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%206.png)
+        ![Untitled](assets
+    /Untitled%206.png)
         
     - $G(S)\cdot H(S) = \frac{s(s+1)}{s^5+2s^4+3s^3+6s^2+5s+3}$
         
-        ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%207.png)
+        ![Untitled](assets
+    /Untitled%207.png)
         
     - $G(S)\cdot H(S) = \frac{s+5}{s^5+2s^4+24s^3+48s^2-25s-50}$
         
-        ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%208.png)
+        ![Untitled](assets
+    /Untitled%208.png)
         
     
     ### **User Guide:**
