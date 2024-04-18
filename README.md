@@ -1,6 +1,6 @@
 # Control Systems Analysis
 
-# 1-Signal Flow Graphs Solver
+## 1-Signal Flow Graphs Solver
 
 ## **Overview**
 
