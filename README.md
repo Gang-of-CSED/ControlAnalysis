@@ -1,4 +1,6 @@
-# Signal Flow Graphs Solver
+# Control Systems Analysis
+
+# 1-Signal Flow Graphs Solver
 
 ## **Overview**
 
@@ -80,3 +82,88 @@ This project involves developing a software application capable of visualizing a
     ![Untitled](assets/Untitled%204.png)
     
     ![Untitled](assets/Untitled%205.png)
+    
+    # 2-Routh-Hurwitz Criterion & Root Locus Plotter
+    
+    ![https://www.notion.soassets/test3.png](https://www.notion.soassets/test3.png)
+    
+    ### **Problem Statement:**
+    
+    **Given:**
+    Characteristic equation of the system. Assume that all the coefficients of $S^0$  to $S^n$ are given.
+    Input example: $S^5+S^4+10S^3+72S^2+152S+240$
+    **Required:**
+    
+    1. Using Routh criteria, state if the system is stable or not.
+    2. If the system is not stable, list the number and values of poles in the RHS of the s-plane.
+    
+    ### **Main Features of the Program:**
+    
+    1. Calculate the Routh-Hurwitz table and determine stability based on the number of sign changes.
+    2. Display the system poles.
+    
+    ### **Additional Options:**
+    
+    1. Ability to input numerator polynomial and Display system zeros
+    2. Display the Routh-Hurwitz table.
+    3. Plot the root locus graphically.
+    4. Calculate gain and damping on root locus
+    5. Provide a graphical user interface for user interaction.
+    
+    ### **Data Structure:**
+    
+    - 2D arrays
+    - Lists
+    
+    ### **Main Modules:**
+    
+    1. **`Routh.py`**: Contains functions for calculating Routh-Hurwitz criterion.
+    2. **`RootLocus.py`**: Handles plotting the root locus.
+    3. **`GUI.py`**: Implements the graphical user interface using PyQt5.
+    
+    ### **Algorithms Used:**
+    
+    1. $\text{Routh-Hurwitz criterion}$
+        
+        $$
+        \begin{align*}&\text{Given a characteristic polynomial: $a_n s^n + a_{n-1} s^{n-1} + \ldots + a_1 s + a_0 = 0$}\\
+        &\text{The Routh-Hurwitz criterion determines the stability of a system based on the signs of the coefficients $a_i$.}\\ &\text{Construct the Routh array as follows:}\\
+        &\left[
+        \begin{array}{c|cccc}
+        s^n & a_n & a_{n-2} & a_{n-4} & \ldots \\
+        s^{n-1} & a_{n-1} & a_{n-3} & a_{n-5} & \ldots \\
+        s^{n-2} & b_1 & b_2 & b_3 & \ldots \\
+        s^{n-3} & c_1 & c_2 & c_3 & \ldots \\
+        \vdots & \vdots & \vdots & \vdots & \ddots \\
+        s^{1} & k_1 & k_2 & k_3 & \ldots \\
+        s^{0} & k_3 & k_4 & k_5 & \ldots \\
+        \end{array}
+        \right]
+        \hspace{0.5cm}\text{where: }\hspace{0.5cm}
+        \begin{aligned}b_1 &= \frac{a_{n-1}a_{n-2}-a_n a_{n-3}}{a_{n-1}} \\b_2 &= \frac{a_{n-1}a_{n-4}-a_n a_{n-5}}{a_{n-1}} \\b_3 &= \frac{a_{n-1}a_{n-6}-a_n a_{n-7}}{a_{n-1}} \\\end{aligned}\\
+        &\text{For stability:}\\
+        &\hspace{0.5cm}\text{All elements in the first column must have the same sign.}
+        \end{align*}
+        $$
+        
+    
+    ### **Sample Runs:**
+    
+    - $G(S)\cdot H(S) = \frac{1}{s^4+2s^3+3s^2+4s+5}$
+        
+        ![Untitled](assets/Untitled%206.png)
+        
+    - $G(S)\cdot H(S) = \frac{s(s+1)}{s^5+2s^4+3s^3+6s^2+5s+3}$
+        
+        ![Untitled](assets/Untitled%207.png)
+        
+    - $G(S)\cdot H(S) = \frac{s+5}{s^5+2s^4+24s^3+48s^2-25s-50}$
+        
+        ![Untitled](assets/Untitled%208.png)
+        
+    
+    ### **User Guide:**
+    
+    1. Enter the denominator and optionally the numerator polynomial in the provided text fields.
+    2. Click the "Calculate" button to analyze stability and plot the root locus.
+    3. View the Routh-Hurwitz table, stability analysis results, system poles, and zeros in the output area.
