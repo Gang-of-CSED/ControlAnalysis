@@ -45,7 +45,7 @@ This project involves developing a software application capable of visualizing a
 
 ## User Guide
 
----
+
 
 ![Untitled](assets/Untitled2.png)
 
@@ -68,13 +68,13 @@ This project involves developing a software application capable of visualizing a
     
     ## Sample Runs
     
-    ![Untitled](assets/Untitled3.png)
+    ![Untitled](assets/Untitled1.png)
     
-    ![Untitled](assets/Untitled4.png)
+    ![Untitled](assets/Untitled1.png)
     
-    ![Untitled](assets/Untitled5.png)
+    ![Untitled](assets/Untitled1.png)
     
-    ![Untitled](assets/Untitled6.png)
+    ![Untitled](assets/Untitled1.png)
     
     # 2-Routh-Hurwitz Criterion & Root Locus Plotter
         
