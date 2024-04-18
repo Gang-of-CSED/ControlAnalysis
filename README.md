@@ -1,6 +1,6 @@
 # Control Systems Analysis
 
-## 1-Signal Flow Graphs Solver
+# 1-Signal Flow Graphs Solver
 
 ## **Overview**
 
@@ -8,7 +8,7 @@
 
 This project involves developing a software application capable of visualizing and analyzing signal flow graphs. The application will allow users to draw nodes and branch gains of a signal flow graph to provide a graphical representation of the graph, list all forward paths and loops, calculate system determinant Δ and paths determinant Δ1,Δ2..Δn , and compute the overall system transfer function. by Manon's rule.
 
-![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled.png)
+![Untitled](assets/Untitled.png)
 
 ## **Features**
 
@@ -50,7 +50,7 @@ This project involves developing a software application capable of visualizing a
 
 ---
 
-![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%201.png)
+![Untitled](assets/Untitled%201.png)
 
 1. **Adding Nodes:**
     - To add a non-output node , click the 🟢 button in the UI.
@@ -71,17 +71,17 @@ This project involves developing a software application capable of visualizing a
     
     ## Sample Runs
     
-    ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%202.png)
+    ![Untitled](assets/Untitled%202.png)
     
     ---
     
-    ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled.png)
+    ![Untitled](assets/Untitled.png)
     
-    ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%203.png)
+    ![Untitled](assets/Untitled%203.png)
     
-    ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%204.png)
+    ![Untitled](assets/Untitled%204.png)
     
-    ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%205.png)
+    ![Untitled](assets/Untitled%205.png)
     
     # 2-Routh-Hurwitz Criterion & Root Locus Plotter
     
@@ -124,42 +124,22 @@ This project involves developing a software application capable of visualizing a
     ### **Algorithms Used:**
     
     1. $\text{Routh-Hurwitz criterion}$
-        
-        $$
-        \begin{align*}&\text{Given a characteristic polynomial: $a_n s^n + a_{n-1} s^{n-1} + \ldots + a_1 s + a_0 = 0$}\\
-        &\text{The Routh-Hurwitz criterion determines the stability of a system based on the signs of the coefficients $a_i$.}\\ &\text{Construct the Routh array as follows:}\\
-        &\left[
-        \begin{array}{c|cccc}
-        s^n & a_n & a_{n-2} & a_{n-4} & \ldots \\
-        s^{n-1} & a_{n-1} & a_{n-3} & a_{n-5} & \ldots \\
-        s^{n-2} & b_1 & b_2 & b_3 & \ldots \\
-        s^{n-3} & c_1 & c_2 & c_3 & \ldots \\
-        \vdots & \vdots & \vdots & \vdots & \ddots \\
-        s^{1} & k_1 & k_2 & k_3 & \ldots \\
-        s^{0} & k_3 & k_4 & k_5 & \ldots \\
-        \end{array}
-        \right]
-        \hspace{0.5cm}\text{where: }\hspace{0.5cm}
-        \begin{aligned}b_1 &= \frac{a_{n-1}a_{n-2}-a_n a_{n-3}}{a_{n-1}} \\b_2 &= \frac{a_{n-1}a_{n-4}-a_n a_{n-5}}{a_{n-1}} \\b_3 &= \frac{a_{n-1}a_{n-6}-a_n a_{n-7}}{a_{n-1}} \\\end{aligned}\\
-        &\text{For stability:}\\
-        &\hspace{0.5cm}\text{All elements in the first column must have the same sign.}
-        \end{align*}
-        $$
-        
+    
+    ![Untitled](assets/Untitled%206.png)
     
     ### **Sample Runs:**
     
     - $G(S)\cdot H(S) = \frac{1}{s^4+2s^3+3s^2+4s+5}$
         
-        ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%206.png)
+        ![Untitled](assets/Untitled%207.png)
         
     - $G(S)\cdot H(S) = \frac{s(s+1)}{s^5+2s^4+3s^3+6s^2+5s+3}$
         
-        ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%207.png)
+        ![Untitled](assets/Untitled%208.png)
         
     - $G(S)\cdot H(S) = \frac{s+5}{s^5+2s^4+24s^3+48s^2-25s-50}$
         
-        ![Untitled](Control%20Systems%20Analysis%205dbd51598fba44fbac5f2049f8ff9219/Untitled%208.png)
+        ![Untitled](assets/Untitled%209.png)
         
     
     ### **User Guide:**
