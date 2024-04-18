@@ -50,7 +50,7 @@ This project involves developing a software application capable of visualizing a
 
 
 
-![Untitled](assets/Untitled%201.png)
+![Untitled](assets/Untitled.png)
 
 1. **Adding Nodes:**
     - To add a non-output node , click the 🟢 button in the UI.
