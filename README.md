@@ -119,14 +119,14 @@ The Routh-Hurwitz Criterion & Root Locus Plotter is a Python application designe
 
 ### **Sample Runs:**
     
-    - $G(S)\cdot H(S) = \frac{1}{s^4+2s^3+3s^2+4s+5}$
+- $G(S)\cdot H(S) = \frac{1}{s^4+2s^3+3s^2+4s+5}$
         
 ![Untitled](assets/Untitled8.png)
         
-    - $G(S)\cdot H(S) = \frac{s(s+1)}{s^5+2s^4+3s^3+6s^2+5s+3}$
+- $G(S)\cdot H(S) = \frac{s(s+1)}{s^5+2s^4+3s^3+6s^2+5s+3}$
         
 ![Untitled](assets/Untitled9.png)
-        
-    - $G(S)\cdot H(S) = \frac{s+5}{s^5+2s^4+24s^3+48s^2-25s-50}$
+      
+- $G(S)\cdot H(S) = \frac{s+5}{s^5+2s^4+24s^3+48s^2-25s-50}$
         
 ![Untitled](assets/Untitled10.png)
