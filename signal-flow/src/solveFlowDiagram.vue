@@ -28,9 +28,9 @@ import algebra from 'algebra.js';
     solve() {
       this.resetValues();
       this.solveFlowDiagram();
+      console.log("loops",JSON.stringify(this.loops, null, 2));
       this.adjustOutputs();
 
-      console.log("loops",JSON.stringify(this.loops, null, 2));
       console.log("loops",JSON.stringify(this.loopsOutPut, null, 2));
       let combinations = [];
       this.getNonTouchingloopsCombinations(this.loops,0,combinations,[]);
@@ -91,28 +91,61 @@ import algebra from 'algebra.js';
       return allPaths;
     },
     
-    findAllCycles(visitedMap, stPath, stGain,  nodeID){
+    findAllCycles(visitedMap, stPath, stGain,edgesIds,nodeID){
       stPath = [...stPath, nodeID];
       stGain = [...stGain];
+      edgesIds = [...edgesIds];
+
       if(visitedMap[nodeID]){
-        let cycle = {path: [], gain: []};
+        let cycle = {path: [], gain: [],edgesIds:[]};
         cycle.path.push(stPath.pop());
         cycle.gain.push(stGain.pop());
+        cycle.edgesIds.push(edgesIds.pop());
+
         while(stPath[stPath.length - 1] != nodeID){
           cycle.path.push(stPath.pop());
           cycle.gain.push(stGain.pop());
+          cycle.edgesIds.push(edgesIds.pop());
         }
-        cycle.path.push(nodeID);
-        this.loops.push(cycle);
+
+        let diffEdges = true;
+        cycle.edgesIds.sort();
+
+        for(let loop of this.loops){
+          // console.log("loop",JSON.stringify(loop.edgesIds, null, 2));
+          // console.log("cycle",JSON.stringify(cycle.edgesIds, null, 2));
+          if(loop.edgesIds.length == cycle.edgesIds.length){
+            let i = 0;
+            for(i=0;i<loop.edgesIds.length;i++){
+              if(loop.edgesIds[i] != cycle.edgesIds[i]){
+                break;
+              }
+            }
+            if(i == loop.edgesIds.length){
+              diffEdges = false;
+              break;
+            }
+          }
+         
+        }
+        
+        if(diffEdges)
+         this.loops.push(cycle);
         return;
       }
       visitedMap[nodeID] = true;
       // stPath.push(nodeID);
-      for(let edge of Object.values(this.edges)){
+      for(let edgeId in this.edges){
+        let edge = this.edges[edgeId];
+
         if(edge.source == nodeID && visitedMap[nodeID]){
+          // console.log("edge",JSON.stringify(edge, null, 2));
           stGain.push(edge.label);
-          this.findAllCycles(visitedMap, stPath, stGain, edge.target);
+          edgesIds.push(edgeId);
+
+          this.findAllCycles(visitedMap, stPath, stGain,edgesIds ,edge.target);
           stGain.pop();
+          edgesIds.pop();
         }
       }
       visitedMap[nodeID] = false;
@@ -126,7 +159,8 @@ import algebra from 'algebra.js';
       }
       let stPath = []; 
       let stGain = [];
-      this.findAllCycles(visitedMap, stPath, stGain, 'node1');
+      let edgesIds=[];
+      this.findAllCycles(visitedMap, stPath, stGain, edgesIds,'node1');
 
       // console.log("loops-------------------\n");
         this.loops = Array.from(new Set(this.loops.map(JSON.stringify))).map(JSON.parse);
@@ -363,9 +397,11 @@ import algebra from 'algebra.js';
         this.pathsDetOutput.push(pathDet.toString());
       }
       for(let loop of this.loops){
-        let reverseLoop = loop.path.slice().reverse();
+        let dummy=loop;
+        dummy.path.push(loop.path[0]);
+        let reverseLoop = dummy.path.slice().reverse();
         let loopPath = this.getBranchName(reverseLoop);
-        let loopGain = this.getBranchGain(loop.gain).toString();
+        let loopGain = this.getBranchGain(dummy.gain).toString();
         this.loopsOutPut.push({path: loopPath, gain: loopGain});
       }
       this.getCombinationsSymbols();
