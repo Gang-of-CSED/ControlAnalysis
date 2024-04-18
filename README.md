@@ -6,7 +6,7 @@
 
 This project involves developing a software application capable of visualizing and analyzing signal flow graphs. The application will allow users to draw nodes and branch gains of a signal flow graph to provide a graphical representation of the graph, list all forward paths and loops, calculate system determinant Δ and paths determinant Δ1,Δ2..Δn , and compute the overall system transfer function. by Manon's rule.
 
-![Untitled](Signal%20Flow%20Graphs%20Solver%202a0845a75a4b49b4a9f768884cd1f072/Untitled.png)
+(assets/Untitled.png)
 
 ## **Features**
 
@@ -48,7 +48,7 @@ This project involves developing a software application capable of visualizing a
 
 ---
 
-![Untitled](Signal%20Flow%20Graphs%20Solver%202a0845a75a4b49b4a9f768884cd1f072/Untitled%201.png)
+(assets/Untitled%201.png)
 
 1. **Adding Nodes:**
     - To add a non-output node , click the 🟢 button in the UI.
@@ -69,14 +69,14 @@ This project involves developing a software application capable of visualizing a
     
     ## Sample Runs
     
-    ![Untitled](Signal%20Flow%20Graphs%20Solver%202a0845a75a4b49b4a9f768884cd1f072/Untitled%202.png)
+    (assets/Untitled%202.png)
     
     ---
     
-    ![Untitled](Signal%20Flow%20Graphs%20Solver%202a0845a75a4b49b4a9f768884cd1f072/Untitled.png)
+    (assets/Untitled.png)
     
-    ![Untitled](Signal%20Flow%20Graphs%20Solver%202a0845a75a4b49b4a9f768884cd1f072/Untitled%203.png)
+    (assets/Untitled%203.png)
     
-    ![Untitled](Signal%20Flow%20Graphs%20Solver%202a0845a75a4b49b4a9f768884cd1f072/Untitled%204.png)
+    (assets/Untitled%204.png)
     
-    ![Untitled](Signal%20Flow%20Graphs%20Solver%202a0845a75a4b49b4a9f768884cd1f072/Untitled%205.png)
+    (assets/Untitled%205.png)
