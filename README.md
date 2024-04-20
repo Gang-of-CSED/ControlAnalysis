@@ -4,14 +4,12 @@
 
 ## **Overview**
 
----
 
 This project involves developing a software application capable of visualizing and analyzing signal flow graphs. The application will allow users to draw nodes and branch gains of a signal flow graph to provide a graphical representation of the graph, list all forward paths and loops, calculate system determinant Δ and paths determinant Δ1,Δ2..Δn , and compute the overall system transfer function. by Manon's rule.
 
 ![Untitled](assets/Untitled1.png)
 
 ## **Features**
-
 
 1. **Dynamic UI Setup:**
     - Users can graphically add nodes via the UI, connecting them arbitrarily for a flexible simulation setup.
@@ -47,9 +45,9 @@ This project involves developing a software application capable of visualizing a
 
 ## User Guide
 
----
 
-![Untitled](assets/Untitled%201.png)
+
+![Untitled](assets/Untitled2.png)
 
 1. **Adding Nodes:**
     - To add a non-output node , click the 🟢 button in the UI.
@@ -70,76 +68,65 @@ This project involves developing a software application capable of visualizing a
     
     ## Sample Runs
     
-    ![Untitled](assets/Untitled%202.png)
+![Untitled](assets/Untitled3.png)
+
+![Untitled](assets/Untitled4.png)
     
+![Untitled](assets/Untitled5.png)
     
-    ![Untitled](assets/Untitled4.png)
+![Untitled](assets/Untitled6.png)
+
     
-    ![Untitled](assets/Untitled5.png)
-    
-    ![Untitled](assets/Untitled6.png)
-    
-    # 2-Routh-Hurwitz Criterion & Root Locus Plotter
-    
-    ![https://www.notion.soassets/test3.png](https://www.notion.soassets/test3.png)
-    
-    ### **Problem Statement:**
-    
-    **Given:**
-    Characteristic equation of the system. Assume that all the coefficients of $S^0$  to $S^n$ are given.
-    Input example: $S^5+S^4+10S^3+72S^2+152S+240$
-    **Required:**
-    
-    1. Using Routh criteria, state if the system is stable or not.
-    2. If the system is not stable, list the number and values of poles in the RHS of the s-plane.
-    
-    ### **Main Features of the Program:**
-    
-    1. Calculate the Routh-Hurwitz table and determine stability based on the number of sign changes.
-    2. Display the system poles.
-    
-    ### **Additional Options:**
-    
-    1. Ability to input numerator polynomial and Display system zeros
-    2. Display the Routh-Hurwitz table.
-    3. Plot the root locus graphically.
-    4. Calculate gain and damping on root locus
-    5. Provide a graphical user interface for user interaction.
-    
-    ### **Data Structure:**
-    
-    - 2D arrays
-    - Lists
-    
-    ### **Main Modules:**
-    
-    1. **`Routh.py`**: Contains functions for calculating Routh-Hurwitz criterion.
-    2. **`RootLocus.py`**: Handles plotting the root locus.
-    3. **`GUI.py`**: Implements the graphical user interface using PyQt5.
-    
-    ### **Algorithms Used:**
-    
-    1. $\text{Routh-Hurwitz criterion}$
-    
+   # Routh-Hurwitz Criterion & Root Locus Plotter
+
+## Overview
+
+The Routh-Hurwitz Criterion & Root Locus Plotter is a Python application designed to analyze the stability and behavior of linear control systems. The application provides a graphical user interface (GUI) for easy interaction and visualization of system characteristics.
+
+## Features
+
+1. **Routh-Hurwitz Criterion**:
+    - Calculates the Routh-Hurwitz Table based on user-provided transfer function coefficients.
+    - Determines system stability by counting the number of sign changes in the first column of the Routh array.
+    - Calculates the poles and zeros of the system transfer function.
+
+2. **Root Locus Plotting**:
+    - Plots the Root Locus of the given transfer function to visualize the movement of poles in the complex plane.
+    - Provides insight into how system stability changes with variations in parameters.
+
+3. **Graphical User Interface (GUI)**:
+    - Intuitive GUI for inputting transfer function coefficients.
+    - Displays Routh-Hurwitz Table and stability analysis results.
+    - Interactive Root Locus plot for visual analysis of system behavior (gain and damping).
+
+## **Algorithm Used:**
+
+1. $\text{Routh-Hurwitz criterion}$
+
 ![Untitled](assets/Untitled7.png)
+
+## User Guide
+
+1. **Input Transfer Function**:
+    - Enter the denominator polynomial
+    - Enter the numerator polynomial (optional for systems without zeros)
+2. **Calculate Routh-Hurwitz Table**:
+    - Click the **`Calculate`** button to generate the Routh table and plot the root locus.
+3. **System Behavior Analysis**:
+    - click at any point on the root locus plot to display the gain and damping ratio at that point.
+
+## Sample Runs
+
+### **Sample Runs:**
     
-    ### **Sample Runs:**
-    
-    - $G(S)\cdot H(S) = \frac{1}{s^4+2s^3+3s^2+4s+5}$
+- $G(S)\cdot H(S) = \frac{1}{s^4+2s^3+3s^2+4s+5}$
         
 ![Untitled](assets/Untitled8.png)
         
-    - $G(S)\cdot H(S) = \frac{s(s+1)}{s^5+2s^4+3s^3+6s^2+5s+3}$
+- $G(S)\cdot H(S) = \frac{s(s+1)}{s^5+2s^4+3s^3+6s^2+5s+3}$
         
 ![Untitled](assets/Untitled9.png)
-        
-    - $G(S)\cdot H(S) = \frac{s+5}{s^5+2s^4+24s^3+48s^2-25s-50}$
+      
+- $G(S)\cdot H(S) = \frac{s+5}{s^5+2s^4+24s^3+48s^2-25s-50}$
         
 ![Untitled](assets/Untitled10.png)
-        
-    
-    ### **User Guide:**
-    
-    1. Enter the denominator and optionally the numerator polynomial in the provided text fields.
-    2. Click the "Calculate" button to analyze stability and plot the root locus.
-    3. View the Routh-Hurwitz table, stability analysis results, system poles, and zeros in the output area.
