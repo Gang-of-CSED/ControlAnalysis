@@ -67,7 +67,8 @@ This project involves developing a software application capable of visualizing a
     - Click the ▶️ button to solve and show outputs
     
     ## Sample Runs
-    
+![Untitled](assets/Untitled11.png)
+
 ![Untitled](assets/Untitled3.png)
 
 ![Untitled](assets/Untitled4.png)
